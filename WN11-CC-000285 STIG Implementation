@@ -1,0 +1,48 @@
+<#
+.SYNOPSIS
+    Explanation:
+
+The script checks if the specified registry path exists; if not, it creates it.
+
+It then sets the fEncryptRPCTraffic value to 1, ensuring secure RPC communication.
+
+Finally, it verifies that the change has been applied correctly.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88-commits
+    Date Created    : 2025-09-01
+    Last Modified   : 2025-09-01
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000285
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN10-AU-000500).ps1 
+#>
+
+# Define registry path and value
+$RegPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services"
+$ValueName = "fEncryptRPCTraffic"
+$ValueData = 1
+
+# Create registry key if it doesn't exist
+if (-not (Test-Path $RegPath)) {
+    New-Item -Path $RegPath -Force | Out-Null
+}
+
+# Set the registry value
+New-ItemProperty -Path $RegPath -Name $ValueName -Value $ValueData -PropertyType DWord -Force | Out-Null
+
+# Verify the change
+Get-ItemProperty -Path $RegPath | Select-Object $ValueName
