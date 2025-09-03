@@ -1,0 +1,53 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the number of allowed bad logon attempts must be configured to three or less.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88-commits/
+    Date Created    : 2025-09-03
+    Last Modified   : 2025-09-03
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-AC-000010
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN11-AC-000010).ps1 
+#>
+
+# Paths
+$infPath = "$env:TEMP\lockout.inf"
+$dbPath = "$env:TEMP\lockout.sdb"
+
+# Full security template
+@"
+[Unicode]
+Unicode=yes
+[Version]
+signature="\$CHICAGO\$"
+Revision=1
+[System Access]
+LockoutBadCount = 3
+ResetLockoutCount = 30
+LockoutDuration = 15
+"@ | Out-File -FilePath $infPath -Encoding ASCII
+
+# Apply security template to a fresh db
+secedit /configure /db $dbPath /cfg $infPath /areas SECURITYPOLICY /overwrite
+
+# Force Group Policy refresh
+gpupdate /force
+
+# Verify
+secedit /export /cfg "$env:TEMP\verify.inf" /areas SECURITYPOLICY
+Select-String -Path "$env:TEMP\verify.inf" -Pattern "LockoutBadCount"
