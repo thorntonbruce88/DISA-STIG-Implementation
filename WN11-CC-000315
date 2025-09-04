@@ -1,0 +1,50 @@
+<#
+.SYNOPSIS
+    The Windows Installer feature "Always install with elevated privileges" must be disabled.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88-commits
+    Date Created    : 2025-09-04
+    Last Modified   : 2025-09-04
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000315
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN11-CC-000315).ps1 
+#>
+
+# Define registry path and setting
+$RegPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Installer"
+$ValueName = "AlwaysInstallElevated"
+$ValueData = 0  # Must be zero to disable privilege elevation
+
+# Create registry key if missing
+if (-not (Test-Path $RegPath)) {
+    New-Item -Path $RegPath -Force | Out-Null
+}
+
+# Apply the STIG setting
+Set-ItemProperty -Path $RegPath -Name $ValueName -Value $ValueData -Type DWord -Force
+
+# Update policy (if you applied via policy path earlier)
+gpupdate /force
+
+# Verification step
+$ver = Get-ItemProperty -Path $RegPath -Name $ValueName -ErrorAction SilentlyContinue
+if ($ver -and $ver.$ValueName -eq 0) {
+    Write-Host "'Always install with elevated privileges' is now disabled – compliant!" -ForegroundColor Green
+} else {
+    Write-Host "Compliance not achieved. Current value:" $($ver.$ValueName) -ForegroundColor Red
+}
