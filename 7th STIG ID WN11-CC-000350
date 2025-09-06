@@ -1,0 +1,45 @@
+<#
+.SYNOPSIS
+    The Windows Remote Management (WinRM) service must not allow unencrypted traffic.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88
+    Date Created    : 2025-09-06
+    Last Modified   : 2025-09-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000350
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN11-CC-000350).ps1 
+#>
+
+# Disable unencrypted WinRM traffic
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service"
+$regName = "AllowUnencryptedTraffic"
+$regValue = 0  # 0 = Disabled
+
+# Create the key if it doesn't exist
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the value
+Set-ItemProperty -Path $regPath -Name $regName -Value $regValue -Type DWord
+
+# Verify the setting
+Get-ItemProperty -Path $regPath -Name $regName
+
+# Optional: restart WinRM service to apply
+Restart-Service WinRM
