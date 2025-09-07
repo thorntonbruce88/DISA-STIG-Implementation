@@ -1,0 +1,45 @@
+<#
+.SYNOPSIS
+    This PowerShell script prevents users from changing installation options
+
+.NOTES
+    Author          : Bruce Thornton
+
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88
+    Date Created    : 2025-09-07
+    Last Modified   : 2025-09-07
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000310
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN11-CC-000310).ps1 
+#>
+
+# STIG ID: WN11-CC-000310
+# Prevent users from changing installation options
+
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Installer"
+$regName = "EnableUserControl"
+$regValue = 0
+
+# Ensure registry path exists
+If (!(Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Apply the setting
+Set-ItemProperty -Path $regPath -Name $regName -Value $regValue -Type DWord
+
+# Verify
+Get-ItemProperty -Path $regPath | Select-Object $regName
