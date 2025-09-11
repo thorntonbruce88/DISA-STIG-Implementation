@@ -1,0 +1,48 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that Windows 11 systems must use a BitLocker PIN with a minimum length of six digits for pre-boot authentication.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88
+    Date Created    : 2025-09-11
+    Last Modified   : 2025-09-11
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-00-000032
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    You’ll need a reboot or gpupdate /force before it’s fully enforced.
+
+Tenable (or any compliance scanner) should pick this up after policy refresh.
+
+You’ll still need to actually configure a PIN on the device with manage-bde -protectors -add if one isn’t already set. The STIG requirement is about enforcing policy, not assigning a PIN automatically.
+Remediation applied via PowerShell modifies the effective local security policy. Group Policy Editor will still display ‘Not Configured’ because this change was not made through a GPO template, but compliance is verified through system queries and Tenable scan results.
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN11-00-000032).ps1 
+#>
+
+# WN11-00-000032 - Enforce BitLocker PIN with minimum 6 digits
+
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\FVE"
+
+# Ensure the policy path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Require TPM + PIN
+Set-ItemProperty -Path $regPath -Name "UseTPMPIN" -Value 1 -Type DWord
+
+# Minimum PIN length (set to 6 per STIG)
+Set-ItemProperty -Path $regPath -Name "MinimumPIN" -Value 6 -Type DWord
+
+Write-Output "BitLocker TPM+PIN requirement and minimum PIN length set to 6."
