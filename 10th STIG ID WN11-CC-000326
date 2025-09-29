@@ -1,0 +1,70 @@
+<#
+.SYNOPSIS
+   Remediates STIG ID WN11-CC-000326: 
+  Enables PowerShell Script Block Logging on Windows 11.  
+This script creates or updates the registry key required 
+  to enforce script block logging. 
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88/STIG-Implementation
+    Date Created    : 2025-09-28
+    Last Modified   : 2025-09-28
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000326
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Must be run with Administrator privileges.
+
+How it works:
+
+Checks if you’re running as Administrator.
+
+Creates the registry path if missing.
+
+Sets EnableScriptBlockLogging = 1.
+
+Confirms and outputs success/failure.
+
+   You can save this as Remediate-WN11-CC-000326.ps1 and run it in PowerShell ISE (Run as Admin).
+
+#>
+
+# Ensure running as Administrator
+If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
+    [Security.Principal.WindowsBuiltinRole] "Administrator")) {
+    Write-Error "You must run this script as Administrator."
+    Exit 1
+}
+
+# Define registry path and value
+$RegPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging"
+$RegName = "EnableScriptBlockLogging"
+$RegValue = 1
+
+# Create registry path if missing
+If (-Not (Test-Path $RegPath)) {
+    New-Item -Path $RegPath -Force | Out-Null
+    Write-Output "Created registry path: $RegPath"
+}
+
+# Set registry value
+Set-ItemProperty -Path $RegPath -Name $RegName -Value $RegValue -Type DWord
+Write-Output "Set $RegName to $RegValue at $RegPath"
+
+# Confirm setting
+$CurrentValue = (Get-ItemProperty -Path $RegPath -Name $RegName).$RegName
+If ($CurrentValue -eq $RegValue) {
+    Write-Output "✅ Script block logging successfully enabled."
+} Else {
+    Write-Error "❌ Failed to enable script block logging. Please check manually."
+}
