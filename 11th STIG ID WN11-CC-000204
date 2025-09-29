@@ -1,0 +1,67 @@
+<#
+.SYNOPSIS
+    Remediates STIG ID WN11-CC-000204:
+  Limits enhanced diagnostic data to the minimum (Basic). Enhanced diagnostic data must be limited to the minimum required to support Windows Analytics. 
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88
+    Date Created    : 2025-09-29
+    Last Modified   : 2025-09-29
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000204
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Must run as Administrator.
+
+A restart or gpupdate /force may be required for Tenable to register the change.
+
+On Windows 11 Home, this policy may not exist or behave differently (but STIGs apply to Enterprise/Education builds).
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN11-CC-000204).ps1 
+#>
+
+<#
+.SYNOPSIS
+  Remediates STIG ID WN11-CC-000204:
+  Limits enhanced diagnostic data to the minimum (Basic). Enhanced diagnostic data must be limited to the minimum required to support Windows Analytics.
+#>
+
+# Ensure running as Administrator
+If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
+    [Security.Principal.WindowsBuiltinRole] "Administrator")) {
+    Write-Error "You must run this script as Administrator."
+    Exit 1
+}
+
+# Registry details
+$RegPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
+$RegName = "AllowTelemetry"
+$RegValue = 1  # Basic
+
+# Create path if missing
+If (-Not (Test-Path $RegPath)) {
+    New-Item -Path $RegPath -Force | Out-Null
+    Write-Output "Created registry path: $RegPath"
+}
+
+# Apply setting
+Set-ItemProperty -Path $RegPath -Name $RegName -Value $RegValue -Type DWord
+Write-Output "Set $RegName to $RegValue at $RegPath"
+
+# Verify
+$CurrentValue = (Get-ItemProperty -Path $RegPath -Name $RegName).$RegName
+If ($CurrentValue -eq $RegValue) {
+    Write-Output "✅ Diagnostic data level successfully set to Basic."
+} Else {
+    Write-Error "❌ Failed to apply setting. Current value: $CurrentValue"
+}
