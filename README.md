@@ -45,11 +45,43 @@ This phase focuses on drafting a Vulnerability Management Policy as a starting p
 
 ### Step 2) Mock Meeting: Policy Buy-In (Stakeholders)
 
-In this phase, a meeting with the server team introduces the draft Vulnerability Management Policy and assesses their capability to meet remediation timelines. Feedback leads to adjustments, like extending the critical remediation window from 48 hours to one week, ensuring collaborative implementation.
+Mock Project: Remediation Policy Rollout Meeting
 
-<a href='https://youtu.be/8g6uafc6LjE' target="_"><img width="600" alt="image" src="https://github.com/user-attachments/assets/549d21f4-26c2-412d-9117-d7b6835aedbf"></a>
+📅 Date: (Mock date)
 
-[YouTube Video: Stakeholder Policy Buy-In Meeting](https://youtu.be/8g6uafc6LjE)
+👥 Attendees: Josh, Jimmy
+
+📝 Meeting Type: Policy Draft Review (Security Remediation Program)
+
+📖 Meeting Recap 
+
+This morning, Josh and Jimmy held a focused meeting to review the draft Remediation Policy. Jimmy confirmed that the draft was well-structured but raised a concern: with current staffing levels, the proposed 48-hour remediation requirement for critical vulnerabilities would be difficult to achieve.
+
+Josh acknowledged this challenge and proposed a compromise — extending the remediation window for most critical vulnerabilities to one week, while reserving the 48-hour window exclusively for urgent, high-impact zero-day threats. Jimmy agreed that this adjustment was practical and supported operational feasibility.
+
+Additionally, Jimmy requested a grace period during the initial rollout to allow teams time to adapt. Josh confirmed that once the policy is finalized, all departments will have a six-month adjustment period before strict enforcement begins.
+
+The meeting concluded on a positive note, with both parties emphasizing the value of collaboration and expressing appreciation for being included in the decision-making process.
+
+🔑 Key Highlights
+
+Issue Identified: Current staffing cannot meet a strict 48-hour remediation requirement.
+
+Compromise Reached:
+
+1 week for standard critical vulnerabilities.
+
+48 hours reserved for zero-day vulnerabilities only.
+
+Transition Period: Six months of adjustment after policy finalization before enforcement.
+
+Outcome: Agreement reached with a collaborative, solution-oriented approach.
+
+Tone of Meeting: Short, effective, and inclusive — ensuring all departments feel part of the solution.
+
+✅ Outcome
+
+The team reached a balanced agreement that ensures security standards remain strong while also accounting for staffing realities. This compromise not only improves adoption feasibility but also fosters stronger collaboration across departments.
 
 ---
 
