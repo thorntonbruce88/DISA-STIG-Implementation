@@ -371,16 +371,16 @@ The server team used PowerShell scripts to remediate insecure protocols and ciph
 The server team removed the guest account from the administrator group. A new scan confirmed remediation, and the results were exported for comparison.  
 [PowerShell: Guest Account Group Membership Remediation](https://github.com/joshmadakor1/lognpacific-public/blob/main/automation/toggle-guest-local-administrators.ps1)  
 
-<img width="627" alt="image" src="https://github.com/user-attachments/assets/870a3eac-3398-44fe-91c0-96f3c2578df4">
+<img width="698" height="372" alt="image" src="https://github.com/user-attachments/assets/450e3e60-0db7-4ac2-a6bc-5ff925d59514" />
 
-[Scan 4 - Guest Account Group Removal](https://drive.google.com/file/d/1jVgikjfrV1YjOcL3QRT_oUB0Y82w22V7/view?usp=drive_link)
+[Scan 4 - Guest Account Group Removal](https://docs.google.com/document/d/1B4CWRTIHe5UiNaFX0XLzgrZhwif-mY7kQVf030VO0Zg/edit?tab=t.0)
 
 
 #### Remediation Round 4: Windows OS Updates
 
 Windows updates were re-enabled and applied until the system was fully up to date. A final scan verified the changes  
 
-<img width="627" alt="image" src="https://github.com/user-attachments/assets/870a3eac-3398-44fe-91c0-96f3c2578df4">
+<img width="684" height="371" alt="image" src="https://github.com/user-attachments/assets/2f101338-91d9-4d67-864b-a5d8cb08c41a" />
 
 [Scan 5 - Post Windows Updates](https://drive.google.com/file/d/1tmDjeHl5uiGitRwWy8kFRi33q-nGi1Zt/view?usp=drive_link)
 
@@ -390,9 +390,10 @@ Windows updates were re-enabled and applied until the system was fully up to dat
 
 The remediation process reduced total vulnerabilities by 80%, from 30 to 6. Critical vulnerabilities were resolved by the second scan (100%), and high vulnerabilities dropped by 90%. Mediums were reduced by 76%. In an actual production environment, asset criticality would further guide future remediation efforts.  
 
-<img width="1920" alt="image" src="https://github.com/user-attachments/assets/51f0aae8-7f36-4d90-b29f-5257e57155f9">
+<img width="608" height="381" alt="image" src="https://github.com/user-attachments/assets/89cb692e-3ea5-42d8-a06b-c51ecc0b1ab4" />
 
-[Remediation Data](https://docs.google.com/spreadsheets/d/1FTtFfZYmFsNLU6pm8nTzsKyKE-d2ftXzX_DPwcnFNfA/edit?gid=0#gid=0)
+
+[Remediation Data]https://docs.google.com/spreadsheets/d/17ui2K1IkdjJ8Lc_qSAgmcjgCYOSizKETZDKRoyyrHqQ/edit?gid=0#gid=0
 
 ---
 
