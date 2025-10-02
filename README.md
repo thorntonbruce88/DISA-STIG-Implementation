@@ -339,12 +339,20 @@ The CAB approved the remediation plan, recognizing that the solution was low-ris
 
 #### Remediation Round 1: Outdated Wireshark Removal
 
-The server team used a PowerShell script to remove outdated Wireshark. A follow-up scan confirmed successful remediation.  
+The server team used a PowerShell script to remove outdated Wireshark. 
+
+Initial Scan:
+
+<img width="787" height="728" alt="image" src="https://github.com/user-attachments/assets/397dda84-c7a9-4770-8200-94d2facd95b9" />
+
+
+A follow-up scan confirmed successful remediation.
+
+<img width="698" height="386" alt="image" src="https://github.com/user-attachments/assets/4bfc5640-35ad-44a3-be5f-3cbadb61ca05" />
+
 [Wireshark Removal Script](https://github.com/joshmadakor1/lognpacific-public/blob/main/automation/remediation-wireshark-uninstall.ps1)  
 
-<img width="634" alt="image" src="https://github.com/user-attachments/assets/7b4f9ab2-d230-4458-ac0f-c0ff070ae79a">
 
-[Scan 2 - Third Party Software Removal](https://drive.google.com/file/d/1UiwPPTtuSZKk02hiMyXf31pXUIeC5EWt/view?usp=drive_link)
 
 
 #### Remediation Round 2: Insecure Protocols & Ciphers
@@ -353,9 +361,9 @@ The server team used PowerShell scripts to remediate insecure protocols and ciph
 [PowerShell: Insecure Protocols Remediation](https://github.com/joshmadakor1/lognpacific-public/blob/main/automation/toggle-protocols.ps1)
 [PowerShell: Insecure Ciphers Remediation](https://github.com/joshmadakor1/lognpacific-public/blob/main/automation/toggle-cipher-suites.ps1)
 
-<img width="630" alt="image" src="https://github.com/user-attachments/assets/0e96120d-8ec9-4f76-8e42-79c752200010">
+<img width="701" height="410" alt="image" src="https://github.com/user-attachments/assets/2ca2efae-f442-4e3f-a28a-5a1bf5924037" />
 
-[Scan 3 - Ciphersuites and Protocols](https://drive.google.com/file/d/1Qc6-ezQvwReCGUZNtnva0kCZo_-zW-Sm/view?usp=drive_link)
+[Scan 3 - Ciphersuites and Protocols] https://docs.google.com/document/d/1gB40h11Roi6XZ3hEBUKkIvyXA-io7spPSusehpdI95E/edit?tab=t.0
 
 
 #### Remediation Round 3: Guest Account Group Membership
