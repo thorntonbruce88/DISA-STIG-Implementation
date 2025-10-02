@@ -285,9 +285,54 @@ The server team and security analyst reached alignment on the priority vulnerabi
 
 The Change Control Board (CAB) reviewed and approved the plan to remove insecure protocols and cipher suites. The plan included a rollback script and a tiered deployment approach.  
 
-<a href="https://youtu.be/zOFPkTa9kY8" target="_"><img width="600" src="https://github.com/user-attachments/assets/07164e63-fbce-471a-b469-29a6d41b7bb8"/></a>
+Mock Project: CAB Meeting – Vulnerability Remediation Approval
 
-[Meeting Video](https://youtu.be/zOFPkTa9kY8)
+📅 Date: (Mock date)
+
+👥 Attendees: Change Advisory Board, Josh (Risk), Jimmy (Infrastructure)
+
+📝 Meeting Type: Change Advisory Board (CAB) Review
+
+
+📖 Meeting Recap
+
+During this week’s CAB meeting, the server team presented two planned vulnerability remediations: removal of insecure protocols and removal of insecure cipher suites. While Jimmy from the Infrastructure team was initially expected to provide the technical overview, he deferred to Josh from the Risk department, who had developed the remediation solution.
+
+Josh explained that the issue stems from outdated or deprecated cryptographic protocols and cipher suites still being available on servers. If left enabled, these could allow systems to negotiate insecure connections. The solution involves a PowerShell script that updates the Windows registry, disabling weak protocols and ciphers while ensuring that only secure, modern standards remain enabled.
+
+The CAB raised a key question regarding rollback planning. Josh confirmed that the team had designed a tiered deployment strategy (pilot → pre-production → full production) and also developed an automated rollback script to restore original settings if unexpected issues occur. This approach reassured the board that risks were mitigated and the change was safe to move forward.
+
+The meeting concluded with no further objections, and the CAB approved the proposed remediation changes for deployment.
+
+🔑 Key Highlights
+
+Planned Changes:
+
+Disable insecure cryptographic protocols.
+
+Disable deprecated cipher suites.
+
+Technical Approach:
+
+PowerShell scripts modify Windows registry keys.
+
+Secure, modern algorithms enabled by default.
+
+Risk Mitigation:
+
+Tiered rollout strategy: pilot → pre-production → full deployment.
+
+Automated rollback scripts provided for rapid recovery.
+
+CAB Concerns Addressed:
+
+Ensured rollback capability was available.
+
+Verified change scope was limited to registry updates.
+
+✅ Outcome
+
+The CAB approved the remediation plan, recognizing that the solution was low-risk, well-documented, and fully reversible. With rollback safeguards and phased deployment in place, the team is cleared to move forward with implementation.
 
 ---
 ### Step 10 ) Remediation Effort
