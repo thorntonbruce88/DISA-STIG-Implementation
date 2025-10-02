@@ -393,20 +393,26 @@ The remediation process reduced total vulnerabilities by 80%, from 29 to 6. Crit
 <img width="608" height="381" alt="image" src="https://github.com/user-attachments/assets/89cb692e-3ea5-42d8-a06b-c51ecc0b1ab4" />
 
 
-[Remediation Data]https://docs.google.com/spreadsheets/d/17ui2K1IkdjJ8Lc_qSAgmcjgCYOSizKETZDKRoyyrHqQ/edit?gid=0#gid=0
+[Remediation Data] https://docs.google.com/spreadsheets/d/17ui2K1IkdjJ8Lc_qSAgmcjgCYOSizKETZDKRoyyrHqQ/edit?gid=0#gid=0
 
 ---
 
 ### On-going Vulnerability Management (Maintenance Mode)
 
-After completing the initial remediation cycle, the vulnerability management program transitions into **Maintenance Mode**. This phase ensures that vulnerabilities continue to be managed proactively, keeping systems secure over time. Regular scans, continuous monitoring, and timely remediation are crucial components of this phase. (See [Finalized Policy][Draft Policy](https://docs.google.com/document/d/1CLSWm1_9JL1oUqgyNNwtPXW6FzXJ7ddVnSAUQTyqC8I/edit?usp=drive_link) for scanning and remediation cadence requirements.)
+After the initial remediation cycle is complete, the Vulnerability Management Program enters Maintenance Mode. This phase focuses on sustaining long-term security by ensuring vulnerabilities are continuously identified, assessed, and remediated. Regular scanning, proactive monitoring, and timely patching are essential to keep systems protected. (See [Finalized Policy][Draft Policy](https://docs.google.com/document/d/1CLSWm1_9JL1oUqgyNNwtPXW6FzXJ7ddVnSAUQTyqC8I/edit?usp=drive_link) for scanning and remediation cadence requirements.)
 
-Key activities in Maintenance Mode include:
-- **Scheduled Vulnerability Scans**: Perform regular scans (e.g., weekly or monthly) to detect new vulnerabilities as systems evolve.
-- **Patch Management**: Continuously apply security patches and updates, ensuring no critical vulnerabilities remain unpatched.
-- **Remediation Follow-ups**: Address newly identified vulnerabilities promptly, prioritizing based on risk and impact.
-- **Policy Review and Updates**: Periodically review the Vulnerability Management Policy to ensure it aligns with the latest security best practices and organizational needs.
-- **Audit and Compliance**: Conduct internal audits to ensure compliance with the vulnerability management policy and external regulations.
-- **Ongoing Communication with Stakeholders**: Maintain open communication with teams responsible for remediation, ensuring efficient coordination.
+Key Activities in Maintenance Mode
 
-By maintaining an active vulnerability management process, organizations can stay ahead of emerging threats and ensure long-term security resilience.
+Scheduled Vulnerability Scans: Run regular scans (weekly, monthly, or as required) to detect newly introduced vulnerabilities.
+
+Patch Management: Apply security patches and updates consistently, ensuring critical vulnerabilities are addressed without delay.
+
+Remediation Follow-ups: Resolve new findings quickly, prioritizing fixes based on severity and business impact.
+
+Policy Review and Updates: Revisit and refine the Vulnerability Management Policy to reflect current security best practices and organizational requirements.
+
+Audit and Compliance: Perform internal audits to confirm adherence to the policy and regulatory standards.
+
+Stakeholder Communication: Maintain clear communication with IT and business teams responsible for remediation to ensure effective coordination.
+
+By keeping the program active during Maintenance Mode, organizations strengthen their ability to stay ahead of emerging threats and maintain long-term security resilience.
