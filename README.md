@@ -399,7 +399,7 @@ The remediation process reduced total vulnerabilities by 80%, from 29 to 6. Crit
 
 ### On-going Vulnerability Management (Maintenance Mode)
 
-After the initial remediation cycle is complete, the Vulnerability Management Program enters Maintenance Mode. This phase focuses on sustaining long-term security by ensuring vulnerabilities are continuously identified, assessed, and remediated. Regular scanning, proactive monitoring, and timely patching are essential to keep systems protected. (See [Finalized Policy][Draft Policy](https://docs.google.com/document/d/1CLSWm1_9JL1oUqgyNNwtPXW6FzXJ7ddVnSAUQTyqC8I/edit?usp=drive_link) for scanning and remediation cadence requirements.)
+After the initial remediation cycle is complete, the Vulnerability Management Program enters Maintenance Mode. This phase focuses on sustaining long-term security by ensuring vulnerabilities are continuously identified, assessed, and remediated. Regular scanning, proactive monitoring, and timely patching are essential to keep systems protected. (See [Draft Policy](https://docs.google.com/document/d/1CLSWm1_9JL1oUqgyNNwtPXW6FzXJ7ddVnSAUQTyqC8I/edit?usp=drive_link) for scanning and remediation cadence requirements.)
 
 Key Activities in Maintenance Mode
 
