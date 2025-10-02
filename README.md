@@ -96,11 +96,49 @@ After gathering feedback from the server team, the policy is revised, addressing
 
 ### Step 4) Mock Meeting: Initial Scan Permission (Server Team)
 
-The team collaborates with the server team to initiate scheduled credential scans. A compromise is reached to scan a single server first, monitoring resource impact, and using just-in-time Active Directory credentials for secure, controlled access.  
+Vulnerability Scan Kickoff Meeting
 
-<a href='https://youtu.be/lg068WA4SKM' target="_"><img width="600" alt="image" src="https://github.com/user-attachments/assets/31fe8d0f-636b-475b-8d5a-a2795c183f86"></a>
+📅 Date: (Mock date)
 
-[YouTube Video: Initial Discovery Scan](https://youtu.be/lg068WA4SKM)
+👥 Attendees: Josh, Jimmy
+
+📝 Meeting Type: Security Operations Discussion
+
+📖 Meeting Recap 
+
+This morning, Josh and Jimmy met to discuss the kickoff of vulnerability scanning under the newly implemented Vulnerability Management Policy. Josh explained the plan to conduct weekly credentialed scans across the server infrastructure, estimating that scanning all 2,200 assets would take approximately 4–6 hours.
+
+Jimmy raised valid concerns regarding resource utilization during scans and the security risks of providing administrative credentials to all systems. Josh clarified that the scan engine generates test traffic to assess vulnerabilities, including checks for outdated software, insecure protocols, and weak cipher suites. He also emphasized that scans should not cause downtime.
+
+To address these concerns, both parties agreed to start with a single-server test scan to observe system performance. For credentials, Josh suggested a just-in-time access approach, where temporary Active Directory accounts are enabled only during scans and then disabled immediately afterward. Jimmy agreed and committed to having Susan begin work on automation for account provisioning to streamline this process.
+
+The meeting concluded with agreement on a phased rollout, starting with a pilot scan, and a plan to reconvene once the credentials are prepared.
+
+🔑 Key Highlights
+
+Plan: Weekly credentialed vulnerability scans across ~2,200 assets.
+
+Duration Estimate: 4–6 hours per full scan cycle.
+
+Concerns Raised:
+
+Potential server performance impact.
+
+Risks of providing broad admin access.
+
+Mitigations:
+
+Start with a single-server scan as a test.
+
+Use temporary Active Directory accounts (just-in-time access model).
+
+Action Item: Susan to automate account provisioning workflow.
+
+Outcome: Agreement to pilot the process before scaling to full infrastructure.
+
+✅ Outcome
+
+The team aligned on a phased scanning approach that balances security requirements with operational safety. By piloting on a single server and using controlled, temporary credentials, the team ensures both confidence in the process and a smoother transition to organization-wide vulnerability management.
 
 ---
 
