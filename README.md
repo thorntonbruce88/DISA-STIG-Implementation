@@ -223,9 +223,61 @@ Governance, Risk, and Compliance
 
 The server team reviewed vulnerability scan results, identifying outdated software, insecure accounts, and deprecated protocols. The remediation packages were prepared for submission to the Change Control Board (CAB). 
 
-<a href="https://youtu.be/0tjjFewxSNw" target="_"><img width="600" src="https://github.com/user-attachments/assets/03027c66-5f7c-42d0-b6dd-09d053c040b1"/></a>
+Mock Project: Post-Discovery Scan Review Meeting
 
-[Meeting Video](https://youtu.be/0tjjFewxSNw)
+📅 Date: (Mock date)
+
+👥 Attendees: Josh, Jimmy
+
+📝 Meeting Type: Security Vulnerability Review with Server Team
+
+📖 Meeting Recap 
+
+Josh and Jimmy met to review the results of the initial discovery vulnerability scan across the server environment. Jimmy confirmed that the scans ran smoothly with no outages or noticeable performance issues, aside from the expected open connections. Both agreed that resource utilization would continue to be monitored, but no significant risks were anticipated.
+
+Josh then presented the vulnerability findings. The most common issue stemmed from outdated Wireshark installations, which appeared across multiple servers. Additionally, Josh discovered that the local guest account was a member of the local administrators group, raising a serious configuration concern. Other findings included deprecated TLS protocols (1.0 and 1.1), medium-strength cipher suites, and some issues potentially resolved through routine Windows Updates (e.g., Edge Chromium updates). Self-signed certificates were noted but considered low priority.
+
+Jimmy agreed that the major focus areas should be removing Wireshark, addressing insecure protocols and cipher suites, and removing the guest account from administrative groups. He noted that most servers share the same configuration baseline, meaning remediation should be more efficient.
+
+The team also confirmed that patch management is already in place for Windows Updates, so vulnerabilities addressed through normal patch cycles were not a concern. Josh committed to building remediation packages for the server team and to return with recommendations ahead of the next Change Control Board meeting.
+
+🔑 Key Highlights
+
+Scan Results:
+
+No outages or major performance issues during the scan.
+
+Monitoring confirmed minimal impact on server resources.
+
+Findings:
+
+Outdated Wireshark installations on multiple servers.
+
+Guest account improperly assigned to local administrators group.
+
+Deprecated TLS protocols (1.0 & 1.1) in use.
+
+Medium-strength cipher suites detected.
+
+Some vulnerabilities likely resolved by Windows Updates.
+
+Self-signed certificates noted, low priority.
+
+Next Steps:
+
+Remove Wireshark from servers.
+
+Remediate guest account group membership.
+
+Disable insecure protocols and cipher suites.
+
+Leverage existing patch management for update-related vulnerabilities.
+
+Prepare remediation packages for streamlined deployment.
+
+✅ Outcome
+
+The server team and security analyst reached alignment on the priority vulnerabilities requiring remediation. The phased approach—starting with Wireshark removal, guest account fixes, and protocol hardening—ensures that risks are addressed efficiently without operational disruption. Josh will prepare remediation packages and return with a proposal before the next Change Control Board session.
 
 ---
 
