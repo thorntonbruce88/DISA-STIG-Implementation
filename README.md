@@ -146,9 +146,12 @@ The team aligned on a phased scanning approach that balances security requiremen
 
 In this phase, an insecure Windows Server is provisioned to simulate the server team's environment. After creating vulnerabilities, an authenticated scan is performed, and the results are exported for future remediation steps.  
 
-<img width="635" alt="image" src="https://github.com/user-attachments/assets/937cccbd-36bb-4445-97b9-e915085cda81" style="border: 2px solid black;">
+<<img width="717" height="475" alt="image" src="https://github.com/user-attachments/assets/a4985bb9-189b-4e4a-b33c-25cf7209056e" />
+>
 
-[Scan 1 - Initial Scan](https://drive.google.com/file/d/1RBPVj_azKJMwmRZ8QILlb4hxIjQU3wQ7/view?usp=drive_link)
+- 🔍 [Vulnerability Management Baseline Scan](https://docs.google.com/document/d/1NYHIWNLFujn9Yv4wuFa_1AhXIrAh-ddqKFmM4yJBJ5c/edit?tab=t.0)
+
+
 
 
 
