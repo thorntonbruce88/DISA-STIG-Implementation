@@ -171,11 +171,51 @@ We assessed vulnerabilities and established a remediation prioritization strateg
 
 ### Step 7) Distributing Remediations to Remediation Teams
 
-The server team received remediation scripts and scan reports to address key vulnerabilities. This streamlined their efforts and prepared them for a follow-up review.  
+Email sent:
 
-<img width="635" alt="image" src="https://github.com/user-attachments/assets/bbf9478f-e1d1-4898-846e-b510ec8c6f72">
+Subject: Vulnerability Remediation Scripts – Testing and Deployment
 
-[Remediation Email](https://github.com/joshmadakor1/lognpacific-public/blob/main/misc/remediation-email.md)
+Hi Team,
+
+Following our initial vulnerability scan and assessment, we have developed a set of remediation scripts to assist with addressing key findings. These scripts are designed for seamless integration into deployment platforms such as SCCM.
+
+Before rolling them out in production, please ensure thorough testing in a controlled environment.
+
+🔧 Remediation 
+
+Third-Party Software Removal (Wireshark)
+
+-----> Uninstall Wireshark: Script: https://github.com/joshmadakor1/lognpacific-public/blob/main/automation/remediation-wireshark-uninstall.ps1
+
+     
+
+Windows OS Secure Configuration – Insecure Protocols
+
+-----> Disable the insecure protocols, enable secure ones: Script: https://github.com/joshmadakor1/lognpacific-public/blob/main/automation/toggle-protocols.ps1 
+
+
+Windows OS Secure Configuration – Insecure Cipher Suites
+
+-----> Disable the insecure ciphers, enable secure ones: Script: https://github.com/joshmadakor1/lognpacific-public/blob/main/automation/toggle-cipher-suites.ps1 
+
+
+Windows OS Secure Configuration – Guest Account Group Membership
+
+-----> Remove the “Guest” account from the “Administrators” Security Group: Script: https://github.com/joshmadakor1/lognpacific-public/blob/main/automation/toggle-guest-local-administrators.ps1
+
+Windows OS Updates - Please run Windows Update, this may need multiple attempts.
+
+
+Restart the server following each remediation.
+
+If you encounter any issues during testing or require modifications, please don’t hesitate to reach out.
+
+Best regards,
+
+Bruce Thornton
+
+Security Analyst, 
+Governance, Risk, and Compliance
 
 ---
 
