@@ -88,7 +88,8 @@ The team reached a balanced agreement that ensures security standards remain str
 ### Step 3) Policy Finalization and Senior Leadership Sign-Off
 
 After gathering feedback from the server team, the policy is revised, addressing aggressive remediation timelines. With final approval from upper management, the policy now guides the program, ensuring compliance and reference for pushback resolution.  
-[Finalized Policy](https://docs.google.com/document/d/1rvueLX_71pOR8ldN9zVW9r_zLzDQxVsnSUtNar8ftdg/edit?usp=drive_link)
+- 📄 [Vulnerability Management Policy](https://docs.google.com/document/d/1cANtAQ6hty16fBSA7lt038e-DRWX9VHgGHREh4ZbK48/edit?tab=t.0#heading=h.5clv4qeychvj)
+
 
 
 ---
