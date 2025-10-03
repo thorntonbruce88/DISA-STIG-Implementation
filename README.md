@@ -1,9 +1,13 @@
 # Vulnerability Management Program Implementation
-In this project, we simulate the implementation of a comprehensive vulnerability management program, from inception to completion.
+Project Overview
 
-_**Inception State:**_ the organization has no existing policy or vulnerability management practices in place.
+This project demonstrates the end-to-end implementation of a comprehensive Vulnerability Management Program within an organization. The lab is designed to simulate the real-world lifecycle of building such a program — beginning from a state of no formal practices, through policy development and stakeholder engagement, and culminating in a complete remediation cycle across the environment.
 
-_**Completion State:**_ a formal policy is enacted, stakeholder buy-in is secured, and a full cycle of organization-wide vulnerability remediation is successfully completed.
+Inception State: The organization lacks a defined vulnerability management policy or structured security practices, leaving critical gaps in how threats are identified and resolved.
+
+Completion State: A formal policy is established, leadership and departmental buy-in are achieved, and the organization successfully executes a full remediation cycle, aligning with security best practices and regulatory expectations.
+
+Through this progression, the lab highlights not only the technical aspects of vulnerability scanning and remediation, but also the governance, process, and collaboration required to maintain an effective long-term program.
 
 ---
 
