@@ -37,6 +37,7 @@ Through this progression, the lab highlights not only the technical aspects of v
 - [Remediation Round 3: Guest Account Group Membership](#remediation-round-3-guest-account-group-membership)
 - [Remediation Round 4: Windows OS Updates](#remediation-round-4-windows-os-updates)
 - [First Cycle Remediation Effort Summary](#first-cycle-remediation-effort-summary)
+- [On-going Vulnerability Management (Maintenance Mode)](#On-going-Vulnerability-Management-(Maintenance-Mode))
 
 ---
 
