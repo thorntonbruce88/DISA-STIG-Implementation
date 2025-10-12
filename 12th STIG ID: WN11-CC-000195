@@ -4,8 +4,8 @@
 
 .NOTES
     Author          : Bruce Thornton
-    LinkedIn        : 
-    GitHub          : 
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88
     Date Created    : 2025-10-12
     Last Modified   : 2025-10-12
     Version         : 1.0
@@ -20,7 +20,7 @@
     PowerShell Ver. : 
 
 .USAGE
-    Put any usage instructions here.
+    
     Example syntax:
     PS C:\> .\_(STIG-ID-WN11-CC-000195).ps1 
 #>
