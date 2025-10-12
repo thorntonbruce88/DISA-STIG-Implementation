@@ -1,0 +1,67 @@
+<#
+.SYNOPSIS
+    Enhanced anti-spoofing for facial recognition must be enabled on Windows 11.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : 
+    GitHub          : 
+    Date Created    : 2025-10-12
+    Last Modified   : 2025-10-12
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000195
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN11-CC-000195).ps1 
+#>
+
+<#
+.SYNOPSIS
+  Remediates STIG WN11-CC-000195:
+  Enables enhanced anti-spoofing for Windows Hello Face.
+
+.NOTES
+  Run as Administrator. A gpupdate/reboot may be required for scanners to reflect the change.
+#>
+
+# Require admin
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
+    ).IsInRole([Security.Principal.WindowsBuiltinRole] "Administrator")) {
+    Write-Error "Run this script as Administrator."
+    exit 1
+}
+
+$RegPath  = "HKLM:\SOFTWARE\Policies\Microsoft\Biometrics\FacialFeatures"
+$RegName  = "EnhancedAntiSpoofing"
+$RegValue = 1
+
+# Ensure path exists
+if (-not (Test-Path $RegPath)) {
+    New-Item -Path $RegPath -Force | Out-Null
+    Write-Output "Created registry path: $RegPath"
+}
+
+# Set value
+New-ItemProperty -Path $RegPath -Name $RegName -Value $RegValue -PropertyType DWord -Force | Out-Null
+Write-Output "Set $RegName to $RegValue at $RegPath"
+
+# Optional: force policy refresh
+gpupdate /target:computer /force | Out-Null
+
+# Verify
+$current = (Get-ItemProperty -Path $RegPath -Name $RegName -ErrorAction SilentlyContinue).$RegName
+if ($current -eq $RegValue) {
+    Write-Output "✅ Enhanced anti-spoofing policy is enabled."
+} else {
+    Write-Error "❌ Failed to enable enhanced anti-spoofing (current: $current)."
+}
