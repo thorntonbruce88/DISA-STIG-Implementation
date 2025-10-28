@@ -1,0 +1,68 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that: The network selection user interface (UI) must not be displayed on the logon screen.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88/DISA-STIG-Implementation
+    Date Created    : 2025-10-28
+    Last Modified   : 2025-10-28
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000120
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_(STIG-ID WN11-CC-000120).ps1 
+#>
+
+
+<#
+.SYNOPSIS
+  Remediates STIG WN11-CC-000120:
+  Hides the network selection UI on the Windows logon screen.
+
+.NOTES
+  Run as Administrator. Logoff/reboot may be needed for logon screen to reflect the change.
+#>
+
+# Require admin
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
+  ).IsInRole([Security.Principal.WindowsBuiltinRole] "Administrator")) {
+  Write-Error "Run this script as Administrator."
+  exit 1
+}
+
+$RegPath  = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System"
+$RegName  = "DontDisplayNetworkSelectionUI"
+$RegValue = 1
+
+# Ensure path exists
+if (-not (Test-Path $RegPath)) {
+  New-Item -Path $RegPath -Force | Out-Null
+  Write-Output "Created registry path: $RegPath"
+}
+
+# Apply setting
+New-ItemProperty -Path $RegPath -Name $RegName -Value $RegValue -PropertyType DWord -Force | Out-Null
+Write-Output "Set $RegName to $RegValue at $RegPath"
+
+# Optional: force policy refresh
+gpupdate /target:computer /force | Out-Null
+
+# Verify
+$current = (Get-ItemProperty -Path $RegPath -Name $RegName -ErrorAction SilentlyContinue).$RegName
+if ($current -eq $RegValue) {
+  Write-Output "✅ Network selection UI will not be displayed on the logon screen (value: $current)."
+} else {
+  Write-Error "❌ Failed to apply setting (current: $current)."
+}
