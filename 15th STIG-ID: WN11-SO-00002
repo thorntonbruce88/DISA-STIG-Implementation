@@ -1,0 +1,107 @@
+<#
+.SYNOPSIS
+    The built-in guest account must be renamed.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : github.com/joshmadakor1
+    Date Created    : 2025-11-02
+    Last Modified   : 2025-11-02
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-SO-000025
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN11-SO-000025).ps1 
+#>
+
+<#
+.SYNOPSIS
+  Remediates STIG WN11-SO-000025:
+  Renames the built-in Guest account (RID ...-501).
+
+.DESCRIPTION
+  Locates the local account whose SID ends with -501 and renames it to a specified value.
+  If the account is already renamed (not "Guest"), the script confirms compliance and exits.
+
+.PARAMETER NewName
+  The new name for the built-in Guest account (default: "Gst_Local_Disabled").
+
+.NOTES
+  - Run as Administrator.
+  - Works on standalone and domain-joined systems (targets LOCAL SAM).
+  - Keep the name ≤ 20 characters (SAM limit) and avoid leading/trailing spaces.
+#>
+
+[CmdletBinding(SupportsShouldProcess=$true)]
+param(
+  [Parameter(Mandatory=$false)]
+  [ValidateLength(1,20)]
+  [ValidatePattern('^[^\s].*[^\s]$')]
+  [string]$NewName = 'Gst_Local_Disabled'
+)
+
+# Require admin
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
+  ).IsInRole([Security.Principal.WindowsBuiltinRole] "Administrator")) {
+  Write-Error "Run this script as Administrator."
+  exit 1
+}
+
+# Ensure LocalAccounts module is available (PowerShell 5+)
+if (-not (Get-Command Get-LocalUser -ErrorAction SilentlyContinue)) {
+  Write-Error "Get-LocalUser / Rename-LocalUser cmdlets not found (PowerShell 5+ required)."
+  exit 1
+}
+
+try {
+  # Find the built-in Guest by RID -501
+  $guestAcct = Get-LocalUser | Where-Object { $_.SID.Value -match '-501$' }
+
+  if (-not $guestAcct) {
+    throw "Built-in Guest account (RID -501) not found."
+  }
+
+  # Already renamed?
+  if ($guestAcct.Name -ne 'Guest') {
+    Write-Output "✅ Guest account already renamed: '$($guestAcct.Name)'. No action needed."
+    return
+  }
+
+  # Check for name collision
+  if (Get-LocalUser -Name $NewName -ErrorAction SilentlyContinue) {
+    throw "The name '$NewName' is already in use. Choose a different NewName."
+  }
+
+  if ($PSCmdlet.ShouldProcess("Guest (RID -501)", "Rename to '$NewName'")) {
+    Rename-LocalUser -Name 'Guest' -NewName $NewName
+    Write-Output "✅ Renamed built-in Guest account to '$NewName'."
+  }
+
+  # Optional: keep Guest disabled (many environments also require it disabled)
+  try {
+    Disable-LocalUser -Name $NewName -ErrorAction SilentlyContinue | Out-Null
+  } catch { }
+
+  # Verify by SID again
+  $verify = Get-LocalUser | Where-Object { $_.SID.Value -match '-501$' }
+  if ($verify -and $verify.Name -eq $NewName) {
+    Write-Output "🔎 Verification: RID -501 is now named '$($verify.Name)'."
+  } else {
+    Write-Warning "Verification could not confirm rename by SID."
+  }
+}
+catch {
+  Write-Error "❌ Remediation failed: $($_.Exception.Message)"
+  exit 1
+}
