@@ -1,0 +1,66 @@
+<#
+.SYNOPSIS
+    “Microsoft consumer experiences must be turned off.”
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : github.com/joshmadakor1
+    Date Created    : 2025-11-02
+    Last Modified   : 2025-11-02
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000197
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_(STIG-ID-WN11-CC-000197).ps1 
+#>
+
+<#
+.SYNOPSIS
+  Remediates STIG WN11-CC-000197:
+  Turns off Microsoft consumer experiences (Cloud Content).
+
+.NOTES
+  Run as Administrator. A gpupdate/reboot may be needed before scanners reflect the change.
+#>
+
+# Require admin
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
+  ).IsInRole([Security.Principal.WindowsBuiltinRole] "Administrator")) {
+  Write-Error "Run this script as Administrator."
+  exit 1
+}
+
+$RegPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent"
+
+# Ensure path exists
+if (-not (Test-Path $RegPath)) {
+  New-Item -Path $RegPath -Force | Out-Null
+  Write-Output "Created registry path: $RegPath"
+}
+
+# Set policy value (primary key used by GPO/Tenable)
+New-ItemProperty -Path $RegPath -Name "DisableWindowsConsumerFeatures" -Value 1 -PropertyType DWord -Force | Out-Null
+
+# (Optional) Set legacy alias some environments also read
+New-ItemProperty -Path $RegPath -Name "DisableConsumerFeatures" -Value 1 -PropertyType DWord -Force | Out-Null
+
+Write-Output "✅ Microsoft consumer experiences disabled."
+
+# Force policy refresh (optional)
+gpupdate /target:computer /force | Out-Null
+
+# Verify
+$primary = (Get-ItemProperty -Path $RegPath -Name "DisableWindowsConsumerFeatures" -ErrorAction SilentlyContinue).DisableWindowsConsumerFeatures
+$alias   = (Get-ItemProperty -Path $RegPath -Name "DisableConsumerFeatures" -ErrorAction SilentlyContinue).DisableConsumerFeatures
+Write-Output ("Verification: DisableWindowsConsumerFeatures={0}; DisableConsumerFeatures={1}" -f $primary,$alias)
