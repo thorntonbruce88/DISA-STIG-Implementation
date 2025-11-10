@@ -1,0 +1,136 @@
+<#
+.SYNOPSIS
+    IPv6 source routing must be configured to highest protection.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : 
+    Date Created    : 2025-11-10
+    Last Modified   : 2025-11-10
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000020
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    
+#>
+
+<#
+STIG ID : WN11-CC-000020
+Title   : IPv6 source routing must be configured to highest protection.
+
+Policy text note:
+This policy setting requires the installation of the MSS-Legacy custom templates
+included with the STIG package. "MSS-Legacy.admx" and "MSS-Legacy.adml" must be
+copied to the \Windows\PolicyDefinitions and
+\Windows\PolicyDefinitions\en-US directories respectively.
+
+Technical implementation:
+At the host level, the effective control is the following registry value:
+  HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters
+  Value Name : DisableIpSourceRouting
+  Type       : REG_DWORD
+  Required   : 2 (Highest protection)
+
+This script directly configures and verifies that registry value. In a
+domain environment, Group Policy with MSS-Legacy templates should be used
+for long-term enforcement, but this script accurately reflects the host's
+compliance state.
+#>
+
+# ========================
+#  Configuration
+# ========================
+$regPath      = 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters'
+$valueName    = 'DisableIpSourceRouting'
+$desiredValue = 2
+$stigId       = 'WN11-CC-000020'
+
+# ========================
+#  Optional: Note MSS-Legacy local template presence
+#  (Domain central store templates may not appear here, so this is informational only.)
+# ========================
+$localAdmx  = Join-Path $env:WINDIR 'PolicyDefinitions\MSS-Legacy.admx'
+$localAdml  = Join-Path $env:WINDIR 'PolicyDefinitions\en-US\MSS-Legacy.adml'
+$admxPresent = Test-Path $localAdmx
+$admlPresent = Test-Path $localAdml
+
+# ========================
+#  Helper: Ensure elevated
+# ========================
+$currId    = [Security.Principal.WindowsIdentity]::GetCurrent()
+$principal = New-Object Security.Principal.WindowsPrincipal($currId)
+$adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
+
+if (-not $principal.IsInRole($adminRole)) {
+    Write-Warning "This script should be run from an elevated PowerShell session (Run as Administrator)."
+}
+
+# ========================
+#  Remediation
+# ========================
+# Ensure the key exists (normally present, but this is defensive)
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Get current value (if it exists)
+$current = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue
+
+if ($null -eq $current) {
+    # Value doesn't exist - create it
+    New-ItemProperty -Path $regPath -Name $valueName -Value $desiredValue -PropertyType DWord -Force | Out-Null
+    $actionTaken = "Created value and set to $desiredValue."
+}
+elseif ($current.$valueName -ne $desiredValue) {
+    # Value exists but is incorrect - fix it
+    Set-ItemProperty -Path $regPath -Name $valueName -Value $desiredValue -Type DWord
+    $actionTaken = "Updated value from $($current.$valueName) to $desiredValue."
+}
+else {
+    $actionTaken = "No change required; value already set to $desiredValue."
+}
+
+# ========================
+#  Verification
+# ========================
+$verified    = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue
+$actualValue = $verified.$valueName
+
+if ($actualValue -eq $desiredValue) {
+    $complianceStatus = 'Compliant'
+} else {
+    $complianceStatus = 'Non-Compliant'
+}
+
+# ========================
+#  Report Output
+# ========================
+$result = [pscustomobject]@{
+    ComputerName          = $env:COMPUTERNAME
+    STIG_ID               = $stigId
+    SettingName           = 'DisableIpSourceRouting (IPv6)'
+    RegistryPath          = 'HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters'
+    ValueName             = $valueName
+    RequiredValue         = $desiredValue
+    ActualValue           = $actualValue
+    ComplianceStatus      = $complianceStatus
+    ActionTaken           = $actionTaken
+    MSS_Legacy_ADMX_Local = $admxPresent
+    MSS_Legacy_ADML_Local = $admlPresent
+    Timestamp             = (Get-Date)
+}
+
+# Display nicely on screen
+$result | Format-List *
+
+# Optional: export as CSV for attachment in the report
+# $result | Export-Csv -Path ".\WN11-CC-000020_$($env:COMPUTERNAME).csv" -NoTypeInformation -Append
