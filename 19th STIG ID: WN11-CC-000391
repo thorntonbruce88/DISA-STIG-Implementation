@@ -1,0 +1,109 @@
+<#
+.SYNOPSIS
+    Internet Explorer must be disabled for Windows 11.
+
+.NOTES
+    Author          : Josh Madakor
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : 
+    Date Created    : 2025-11-11
+    Last Modified   : 2025-11-11
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000391
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG ID : WN11-CC-000391).ps1 
+#>
+
+<#
+STIG ID : WN11-CC-000391
+Title   : Internet Explorer must be disabled for Windows 11.
+
+Technical implementation for compliance:
+1. IE11 feature removed or disabled (where present).
+2. Policy 'Disable Internet Explorer 11 as a standalone browser' set to 'Enabled'
+   with option 'Never', which corresponds to the registry value:
+   HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\NotifyDisableIEOptions (REG_DWORD) = 0
+#>
+
+$stigId = 'WN11-CC-000391'
+
+# ---------------------------
+# 1) Disable IE11 feature if present
+# ---------------------------
+$featureName = 'Internet-Explorer-Optional-amd64'
+$feature = Get-WindowsOptionalFeature -Online -FeatureName $featureName -ErrorAction SilentlyContinue
+
+$featureAction = 'Not applicable (feature not found).'
+if ($feature) {
+    if ($feature.State -ne 'Disabled') {
+        Disable-WindowsOptionalFeature -Online -FeatureName $featureName -NoRestart -ErrorAction SilentlyContinue | Out-Null
+        $featureAction = "Feature '$featureName' was enabled and has been disabled."
+    } else {
+        $featureAction = "Feature '$featureName' was already disabled."
+    }
+}
+
+# ---------------------------
+# 2) Set policy via registry
+# ---------------------------
+$regPath      = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main'
+$valueName    = 'NotifyDisableIEOptions'
+$desiredValue = 0   # 'Never' notify, IE11 disabled as standalone
+
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+$currentReg   = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue
+if ($null -eq $currentReg) {
+    New-ItemProperty -Path $regPath -Name $valueName -PropertyType DWord -Value $desiredValue -Force | Out-Null
+    $regAction = "Created $valueName and set to $desiredValue."
+}
+elseif ($currentReg.$valueName -ne $desiredValue) {
+    Set-ItemProperty -Path $regPath -Name $valueName -Value $desiredValue -Type DWord
+    $regAction = "Updated $valueName from $($currentReg.$valueName) to $desiredValue."
+}
+else {
+    $regAction = "$valueName already set to $desiredValue. No change needed."
+}
+
+# ---------------------------
+# 3) Verification
+# ---------------------------
+$verifyReg = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue
+$actualValue = $verifyReg.$valueName
+
+if ($actualValue -eq $desiredValue -and ($feature -eq $null -or $feature.State -eq 'Disabled')) {
+    $complianceStatus = 'Compliant'
+} else {
+    $complianceStatus = 'Non-Compliant'
+}
+
+$result = [pscustomobject]@{
+    ComputerName          = $env:COMPUTERNAME
+    STIG_ID               = $stigId
+    SettingName           = 'Disable Internet Explorer 11 as a standalone browser'
+    RegistryPath          = 'HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\Main'
+    ValueName             = $valueName
+    RequiredValue         = $desiredValue
+    ActualValue           = $actualValue
+    IE_Feature_Action     = $featureAction
+    Registry_Action       = $regAction
+    ComplianceStatus      = $complianceStatus
+    Timestamp             = (Get-Date)
+}
+
+$result | Format-List *
+# Optional CSV output for your report:
+# $result | Export-Csv ".\WN11-CC-000391_$($env:COMPUTERNAME).csv" -NoTypeInformation -Append
