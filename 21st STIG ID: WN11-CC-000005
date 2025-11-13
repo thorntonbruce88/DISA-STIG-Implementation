@@ -1,0 +1,72 @@
+<#
+.SYNOPSIS
+    Camera access from the lock screen must be disabled.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : https://github.com/thorntonbruce88/
+    Date Created    : 2025-11-13
+    Last Modified   : 2025-11-13
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000005
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_Remediate-WN11-CC-000005.ps1 
+#>
+
+<#
+STIG ID : WN11-CC-000005
+Title   : Camera access from the lock screen must be disabled.
+Check/Fix mapping:
+  HKLM\SOFTWARE\Policies\Microsoft\Windows\Personalization
+  NoLockScreenCamera (REG_DWORD) = 1
+#>
+
+$regPath      = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization'
+$valueName    = 'NoLockScreenCamera'
+$desiredValue = 1
+$stigId       = 'WN11-CC-000005'
+
+# Ensure key exists
+if (-not (Test-Path $regPath)) { New-Item -Path $regPath -Force | Out-Null }
+
+# Set value if needed
+$current = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue
+if ($null -eq $current) {
+  New-ItemProperty -Path $regPath -Name $valueName -PropertyType DWord -Value $desiredValue -Force | Out-Null
+  $action = "Created $valueName and set to $desiredValue."
+} elseif ($current.$valueName -ne $desiredValue) {
+  Set-ItemProperty -Path $regPath -Name $valueName -Value $desiredValue -Type DWord
+  $action = "Updated $valueName from $($current.$valueName) to $desiredValue."
+} else {
+  $action = "$valueName already set to $desiredValue. No change needed."
+}
+
+# Verify
+$actual = (Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue).$valueName
+$compliant = if ($actual -eq $desiredValue) {'Compliant'} else {'Non-Compliant'}
+
+# Evidence object
+[pscustomobject]@{
+  ComputerName     = $env:COMPUTERNAME
+  STIG_ID          = $stigId
+  SettingName      = 'Prevent enabling lock screen camera'
+  RegistryPath     = 'HKLM\SOFTWARE\Policies\Microsoft\Windows\Personalization'
+  ValueName        = $valueName
+  RequiredValue    = $desiredValue
+  ActualValue      = $actual
+  ComplianceStatus = $compliant
+  ActionTaken      = $action
+  Timestamp        = Get-Date
+} | Format-List *
