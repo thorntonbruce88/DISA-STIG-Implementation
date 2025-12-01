@@ -1,0 +1,50 @@
+<#
+.SYNOPSIS
+    Web publishing and online ordering wizards must be prevented from downloading a list of providers.
+
+.NOTES
+    Author          : Bruce Thornton
+    LinkedIn        : www.linkedin.com/in/bruce-thornton-3b0b80350
+    GitHub          : github.com/joshmadakor1
+    Date Created    : 2025-12-01
+    Last Modified   : 2025-12-01
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN11-CC-000105
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\_WN11-CC-000105.ps1 
+#>
+
+# Run as Administrator
+
+$regPath = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer'
+$regName = 'NoWebServices'
+$regValue = 1
+
+# Ensure key exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the value (REG_DWORD)
+Set-ItemProperty -Path $regPath -Name $regName -Value $regValue -Type DWord
+
+# Verify
+$result = Get-ItemProperty -Path $regPath -Name $regName -ErrorAction Stop
+"'$regName' = $($result.$regName)"
+
+# Optional: force a Group Policy refresh (harmless if not GPO-managed)
+& gpupdate /force | Out-Null
+
+# Optional: restart Explorer if the UI needs the change immediately
+# Stop-Process -Name explorer -Force; Start-Process explorer.exe
